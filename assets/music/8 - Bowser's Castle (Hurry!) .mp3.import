@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/8 - Bowser's Castle (Hurry!) .mp3-6a1c74103a2425ab6eb33345087ded14.mp3str"
+
+[deps]
+
+source_file="res://assets/music/8 - Bowser's Castle (Hurry!) .mp3"
+dest_files=[ "res://.import/8 - Bowser's Castle (Hurry!) .mp3-6a1c74103a2425ab6eb33345087ded14.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

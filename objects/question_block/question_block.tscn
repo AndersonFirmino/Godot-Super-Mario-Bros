@@ -1,0 +1,129 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://objects/question_block/question_block.gd" type="Script" id=1]
+[ext_resource path="res://assets/sprites/NES - Super Mario Bros - Items Objects and NPCs.png" type="Texture" id=2]
+[ext_resource path="res://assets/sprites/NES - Super Mario Bros - Item and Brick Blocks.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 16.0027, 15.9269 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "collision_a"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 3 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite:region_enabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite:region_rect")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Rect2( 128, 112, 16, 16 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.6
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 0, 80, 16, 16 ), Rect2( 16, 80, 16, 16 ), Rect2( 32, 80, 16, 16 ), Rect2( 16, 80, 16, 16 ), Rect2( 0, 80, 16, 16 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 2 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite:region_enabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 14.0126, 0.350296 )
+
+[node name="question_block" type="StaticBody2D"]
+scale = Vector2( 2, 2 )
+script = ExtResource( 1 )
+coins = 5
+
+[node name="sprite" type="Sprite" parent="."]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 80, 16, 16 )
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="animation_player" type="AnimationPlayer" parent="."]
+autoplay = "rotating_a"
+playback_speed = 0.7
+anims/collision_a = SubResource( 2 )
+anims/rotating_a = SubResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="hit_area_A" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="hit_area_A"]
+position = Vector2( -0.0765305, 16.5871 )
+shape = SubResource( 4 )
+
+[node name="coin_spawn" type="Position2D" parent="."]
+position = Vector2( 0.00018692, -23.6372 )
+
+[connection signal="area_entered" from="hit_area_A" to="." method="_on_hit_area_A_area_entered"]

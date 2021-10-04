@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/13 - You Have Died.mp3-8bc8021c84e9e6e65f03f10785f982b3.mp3str"
+
+[deps]
+
+source_file="res://assets/music/13 - You Have Died.mp3"
+dest_files=[ "res://.import/13 - You Have Died.mp3-8bc8021c84e9e6e65f03f10785f982b3.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

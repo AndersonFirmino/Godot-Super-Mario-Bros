@@ -1,0 +1,62 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://objects/coin/coin.gd" type="Script" id=1]
+[ext_resource path="res://assets/sprites/NES - Super Mario Bros - Items Objects and NPCs.png" type="Texture" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "coin_a"
+length = 0.6
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Rect2( 3, 98, 10.2893, 14 ), Rect2( 19, 98, 10, 14 ), Rect2( 35, 98, 10, 14 ), Rect2( 19, 98, 10, 14 ), Rect2( 3, 98, 10.2893, 14 ), Rect2( 3, 98, 10.2893, 14 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "coin_b"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Rect2( 1, 17, 14, 16 ), Rect2( 20, 17, 10, 16 ), Rect2( 40, 17, 4, 16 ), Rect2( 54, 17, 10, 16 ) ]
+}
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 5.13703, 7 )
+
+[node name="coin" type="Area2D"]
+scale = Vector2( 3.5, 3.5 )
+collision_layer = 0
+collision_mask = 4
+script = ExtResource( 1 )
+
+[node name="animation_player" type="AnimationPlayer" parent="."]
+playback_speed = 0.7
+anims/coin_a = SubResource( 1 )
+anims/coin_b = SubResource( 2 )
+
+[node name="sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 3, 98, 10.2893, 14 )
+
+[node name="mesh_instance_2d" type="CollisionShape2D" parent="."]
+shape = SubResource( 3 )
+
+[connection signal="area_entered" from="." to="." method="_on_coin_area_entered"]

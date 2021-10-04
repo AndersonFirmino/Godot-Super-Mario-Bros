@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/12 - Bowser's Castle Complete.mp3-39ab933313cf6946b029bc36e7141ee5.mp3str"
+
+[deps]
+
+source_file="res://assets/music/12 - Bowser's Castle Complete.mp3"
+dest_files=[ "res://.import/12 - Bowser's Castle Complete.mp3-39ab933313cf6946b029bc36e7141ee5.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

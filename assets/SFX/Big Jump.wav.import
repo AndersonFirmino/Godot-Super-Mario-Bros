@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Big Jump.wav-25b90a0a1dec41c5692cba2ad48a0127.sample"
+
+[deps]
+
+source_file="res://assets/SFX/Big Jump.wav"
+dest_files=[ "res://.import/Big Jump.wav-25b90a0a1dec41c5692cba2ad48a0127.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

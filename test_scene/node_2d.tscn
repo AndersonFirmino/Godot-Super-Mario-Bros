@@ -1,0 +1,65 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://characters/enemies/Thwomp/Thwomp.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/sprites/misc/misc-4.png" type="Texture" id=2]
+[ext_resource path="res://characters/player/mario.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 118.857, 17.1754 )
+
+[node name="node_2d" type="Node2D"]
+
+[node name="Thwomp" parent="." instance=ExtResource( 1 )]
+position = Vector2( 512.749, 213.692 )
+
+[node name="node_2d_2" type="Node2D" parent="."]
+position = Vector2( 504.64, 633.789 )
+scale = Vector2( 4, 4 )
+
+[node name="node_2d" type="StaticBody2D" parent="node_2d_2" groups=[
+"floor",
+]]
+collision_mask = 2
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="node_2d_2/node_2d" groups=[
+"ground",
+]]
+z_index = 1
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="sprite" type="Sprite" parent="node_2d_2/node_2d"]
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 58, 317, 238, 34 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="node_2d_2" type="StaticBody2D" parent="node_2d_2" groups=[
+"floor",
+]]
+position = Vector2( -6.16, -140.947 )
+rotation = 3.14159
+collision_mask = 2
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="node_2d_2/node_2d_2"]
+visible = false
+z_index = 1
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="sprite" type="Sprite" parent="node_2d_2/node_2d_2"]
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 58, 317, 238, 34 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="mario" parent="." instance=ExtResource( 3 )]
+position = Vector2( 129.274, 541.129 )

@@ -1,0 +1,181 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://characters/player/mario.gd" type="Script" id=1]
+[ext_resource path="res://assets/sprites/player/NES - Super Mario Bros - Mario & Luigi.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 5.3152, 7.03048 )
+
+[sub_resource type="AnimationNodeAnimation" id=2]
+animation = "die"
+
+[sub_resource type="AnimationNodeAnimation" id=3]
+animation = "idle"
+
+[sub_resource type="AnimationNodeAnimation" id=4]
+animation = "jumping"
+
+[sub_resource type="AnimationNodeAnimation" id=5]
+animation = "walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=6]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=7]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=8]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=9]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=10]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=11]
+
+[sub_resource type="AnimationNodeStateMachine" id=12]
+states/die/node = SubResource( 2 )
+states/die/position = Vector2( 635, 62 )
+states/idle/node = SubResource( 3 )
+states/idle/position = Vector2( 393, 62 )
+states/jumping/node = SubResource( 4 )
+states/jumping/position = Vector2( 592, 202 )
+states/walking/node = SubResource( 5 )
+states/walking/position = Vector2( 224, 202 )
+transitions = [ "idle", "walking", SubResource( 6 ), "idle", "jumping", SubResource( 7 ), "walking", "idle", SubResource( 8 ), "walking", "jumping", SubResource( 9 ), "jumping", "idle", SubResource( 10 ), "idle", "die", SubResource( 11 ) ]
+graph_offset = Vector2( -7, -58 )
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=13]
+
+[sub_resource type="Animation" id=14]
+resource_name = "die"
+length = 0.1
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.001 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Rect2( 23, 9, 14, 14 ), Rect2( 23, 9, 14, 14 ) ]
+}
+
+[sub_resource type="Animation" id=15]
+length = 0.1
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.001 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ Rect2( 3, 9, 12, 16 ), Rect2( 3, 9, 12, 16 ) ]
+}
+
+[sub_resource type="Animation" id=16]
+resource_name = "jumping"
+length = 0.1
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Rect2( 119, 9, 16, 16 ) ]
+}
+
+[sub_resource type="Animation" id=17]
+length = 0.3
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ Rect2( 79, 10, 13, 15 ), Rect2( 43, 9, 15, 16 ), Rect2( 62, 9, 12, 16 ) ]
+}
+
+[sub_resource type="RectangleShape2D" id=18]
+extents = Vector2( 5.72291, 6.88263 )
+
+[sub_resource type="RectangleShape2D" id=19]
+extents = Vector2( 4.03987, 0.50691 )
+
+[node name="mario" type="KinematicBody2D" groups=[
+"player",
+]]
+pause_mode = 2
+scale = Vector2( 4, 4 )
+z_index = 1
+collision_layer = 0
+script = ExtResource( 1 )
+LEFT_BUTTON_STRING = "ui_left"
+RIGHT_BUTTON_STRING = "ui_right"
+JUMP_BUTTON_STRING = "ui_up"
+node_sprite = NodePath("sprite")
+animation_tree = NodePath("animation_tree")
+
+[node name="sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 79, 10, 13, 15 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="animation_tree" type="AnimationTree" parent="."]
+tree_root = SubResource( 12 )
+anim_player = NodePath("../animation_player")
+active = true
+parameters/playback = SubResource( 13 )
+
+[node name="animation_player" type="AnimationPlayer" parent="."]
+anims/die = SubResource( 14 )
+anims/idle = SubResource( 15 )
+anims/jumping = SubResource( 16 )
+anims/walking = SubResource( 17 )
+
+[node name="corpo" type="Area2D" parent="." groups=[
+"mario",
+"player",
+]]
+collision_layer = 4
+collision_mask = 2
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="corpo"]
+position = Vector2( 0, -0.637902 )
+shape = SubResource( 18 )
+
+[node name="pes" type="Area2D" parent="." groups=[
+"pes",
+]]
+position = Vector2( 0, 0.418696 )
+collision_layer = 4
+collision_mask = 2
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="pes"]
+position = Vector2( -0.224897, 6.92169 )
+shape = SubResource( 19 )
+
+[connection signal="body_entered" from="corpo" to="." method="_on_corpo_body_entered"]

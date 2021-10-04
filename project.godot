@@ -1,0 +1,58 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "StaticBody2D",
+"class": "Block",
+"language": "GDScript",
+"path": "res://objects/block/block.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "KinematicEnemy2D",
+"language": "GDScript",
+"path": "res://scripts/enemy/kinematic_enemy2D.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Plataformer",
+"language": "GDScript",
+"path": "res://scripts/plataformer/plataformer.gd"
+} ]
+_global_script_class_icons={
+"Block": "",
+"KinematicEnemy2D": "",
+"Plataformer": ""
+}
+
+[application]
+
+config/name="Super Mario Bros Godot"
+config/icon="res://icon.png"
+
+[autoload]
+
+SFX="*res://globals_objects/SFX_MANAGER/SFX_MANAGER.tscn"
+MUSIC="*res://globals_objects/MUSIC_MANAGER/MUSIC_MANAGER.tscn"
+debug_script="*res://globals_objects/debug_scripts/debug_script.gd"
+
+[layer_names]
+
+2d_physics/layer_1="chao"
+2d_physics/layer_2="inimigos"
+2d_physics/layer_3="player"
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+vram_compression/import_etc=true
+vram_compression/import_etc2=false

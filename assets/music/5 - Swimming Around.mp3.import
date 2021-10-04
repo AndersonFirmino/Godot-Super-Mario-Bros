@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/5 - Swimming Around.mp3-1804b713c5e51492d28c0b0dfcd291d8.mp3str"
+
+[deps]
+
+source_file="res://assets/music/5 - Swimming Around.mp3"
+dest_files=[ "res://.import/5 - Swimming Around.mp3-1804b713c5e51492d28c0b0dfcd291d8.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

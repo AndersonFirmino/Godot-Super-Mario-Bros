@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/sprites/NES - Super Mario Bros - Items Objects and NPCs.png" type="Texture" id=1]
+[ext_resource path="res://objects/coin/coin_rotating.gd" type="Script" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "rotating"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Rect2( 294, 113, 4, 14 ), Rect2( 308, 113, 8, 14 ), Rect2( 326, 113, 4, 14 ), Rect2( 344, 113, 1, 14 ) ]
+}
+
+[node name="coin_rotating" type="Sprite"]
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 344, 113, 1, 14 )
+script = ExtResource( 2 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "rotating"
+playback_speed = 5.0
+anims/rotating = SubResource( 1 )

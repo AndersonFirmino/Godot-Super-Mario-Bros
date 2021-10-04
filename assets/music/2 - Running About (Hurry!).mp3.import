@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/2 - Running About (Hurry!).mp3-e17ffb9f46e06b85905ab36f2ae6ba6a.mp3str"
+
+[deps]
+
+source_file="res://assets/music/2 - Running About (Hurry!).mp3"
+dest_files=[ "res://.import/2 - Running About (Hurry!).mp3-e17ffb9f46e06b85905ab36f2ae6ba6a.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://globals_objects/SFX_MANAGER/SFX_MANAGER.gd" type="Script" id=1]
+[ext_resource path="res://assets/SFX/Jump.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/SFX/Squish.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/SFX/Coin.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/SFX/Thwomp.wav" type="AudioStream" id=6]
+
+[node name="SFX_MANAGER" type="Node"]
+pause_mode = 2
+script = ExtResource( 1 )
+
+[node name="thwomp" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="cannon" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="coin" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+
+[node name="gomba_smashed" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[node name="mario_jump" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )

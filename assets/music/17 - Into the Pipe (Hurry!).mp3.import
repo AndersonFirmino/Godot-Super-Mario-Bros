@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/17 - Into the Pipe (Hurry!).mp3-71cd4a57c271f2c0e4df4574db7105b1.mp3str"
+
+[deps]
+
+source_file="res://assets/music/17 - Into the Pipe (Hurry!).mp3"
+dest_files=[ "res://.import/17 - Into the Pipe (Hurry!).mp3-71cd4a57c271f2c0e4df4574db7105b1.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
