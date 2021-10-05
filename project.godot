@@ -23,17 +23,11 @@ _global_script_classes=[ {
 "class": "Plataformer",
 "language": "GDScript",
 "path": "res://scripts/plataformer/plataformer.gd"
-}, {
-"base": "KinematicBody2D",
-"class": "PlataformerV2",
-"language": "GDScript",
-"path": "res://plataformerV2.gd"
 } ]
 _global_script_class_icons={
 "Block": "",
 "KinematicEnemy2D": "",
-"Plataformer": "",
-"PlataformerV2": ""
+"Plataformer": ""
 }
 
 [application]

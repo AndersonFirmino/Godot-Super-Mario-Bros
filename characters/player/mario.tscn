@@ -124,9 +124,6 @@ scale = Vector2( 4, 4 )
 z_index = 1
 collision_layer = 0
 script = ExtResource( 1 )
-LEFT_BUTTON_STRING = "ui_left"
-RIGHT_BUTTON_STRING = "ui_right"
-JUMP_BUTTON_STRING = "ui_up"
 node_sprite = NodePath("sprite")
 animation_tree = NodePath("animation_tree")
 

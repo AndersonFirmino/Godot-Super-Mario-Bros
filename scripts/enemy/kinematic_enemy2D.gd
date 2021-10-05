@@ -47,6 +47,6 @@ func _physics_process(delta):
 func set_player_jump_impulse(body):
 	if body.is_in_group("player"):
 		if body.is_pressing_jump:
-				body.linear_vel.y = -800
+				body.vel.y = -800
 		else:
-			body.linear_vel.y = -400
+			body.vel.y = -400

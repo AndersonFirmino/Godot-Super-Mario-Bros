@@ -1,4 +1,4 @@
-extends Plataformer
+extends PlataformerV2
 
 export(String, "small mario", "super mario", "flower mario") var mario_states
 
@@ -27,9 +27,9 @@ func _process(delta):
 		state_machine.travel("die")
 
 func _input(event):
-	is_pressing_jump = Input.is_action_pressed(JUMP_BUTTON_STRING)
+	is_pressing_jump = Input.is_action_pressed(input_jump)
 
-	if is_pressing_jump and on_floor:
+	if is_pressing_jump:
 		SFX.mario_jump()
 
 ##
@@ -37,7 +37,7 @@ func _input(event):
 ##
 func _on_corpo_body_entered(body):
 	if body.is_in_group("inimigo") and is_alive:
-		linear_vel = Vector2()
+		vel = Vector2()
 		morrer()
 
 
@@ -47,7 +47,7 @@ func morrer():
 	clean_groups()
 	$collision_shape_2d.set_deferred("disabled", true)
 	is_alive = false
-	linear_vel.y = -500
+	vel.y = -500
 	MUSIC.play('dead_mario')
 	get_tree().paused = true
 
