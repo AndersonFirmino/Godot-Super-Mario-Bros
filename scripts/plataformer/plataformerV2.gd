@@ -1,0 +1,266 @@
+extends KinematicBody2D
+
+class_name PlataformerV2
+
+# Set these to the name of your action (in the Input Map)
+export var input_left : String = "move_left"
+export var input_right : String = "move_right"
+export var input_jump : String = "jump"
+
+# The max jump height in pixels (holding jump)
+export var max_jump_height = 150 setget set_max_jump_height
+# The minimum jump height (tapping jump)
+export var min_jump_height = 40 setget set_min_jump_height
+# The height of your jump in the air
+export var double_jump_height = 100 setget set_double_jump_height
+# How long it takes to get to the peak of the jump in seconds
+export var jump_duration = 0.3 setget set_jump_duration
+# Multiplies the gravity by this while falling
+export var falling_gravity_multiplier = 1.5
+# Set to 2 for double jump
+export var max_jump_amount = 1
+export var max_acceleration = 4000
+export var friction = 8
+export var can_hold_jump : bool = false
+# You can still jump this many seconds after falling off a ledge
+export var coyote_time : float = 0.1
+# Only neccessary when can_hold_jump is off
+# Pressing jump this many seconds before hitting the ground will still make you jump
+export var jump_buffer : float = 0.1
+
+# not used
+var max_speed = 100
+var acceleration_time = 10
+
+# These will be calcualted automatically
+var default_gravity : float
+var jump_velocity : float
+var double_jump_velocity : float
+# Multiplies the gravity by this when we release jump
+var release_gravity_multiplier : float
+
+
+
+var jumps_left : int
+var holding_jump := false
+
+var vel = Vector2()
+var acc = Vector2()
+
+onready var coyote_timer = Timer.new()
+onready var jump_buffer_timer = Timer.new()
+
+##
+# Animation Control
+##
+# Caminho para o node do sprite (NAO é o node do sprite [objeto])
+export(NodePath) var node_sprite
+
+# Caminho para o node AnimationTree
+export(NodePath) var animation_tree
+
+var anim = ""
+
+var is_walking = false
+var is_jumping = false
+var is_falling = false # TODO: Implement is_falling behavior
+var on_floor = true
+
+##
+# Caso o personagem esteja com is_alive false os controles serão bloqueados
+##
+var is_alive = true
+
+# cache the sprite here for fast access (we will set scale to flip it often)
+onready var sprite = get_node(node_sprite)
+
+###
+
+func _ready():
+	default_gravity = calculate_gravity(max_jump_height, jump_duration)
+	jump_velocity = calculate_jump_velocity(max_jump_height, jump_duration)
+	double_jump_velocity = calculate_jump_velocity2(double_jump_height, default_gravity)
+	release_gravity_multiplier = calculate_release_gravity_multiplier(jump_velocity, min_jump_height)
+
+	print("double vel = ", double_jump_velocity)
+	print("jump vel = ", jump_velocity)
+
+	add_child(coyote_timer)
+	coyote_timer.wait_time = coyote_time
+	coyote_timer.one_shot = true
+
+	add_child(jump_buffer_timer)
+	jump_buffer_timer.wait_time = jump_buffer
+	jump_buffer_timer.one_shot = true
+
+
+func _physics_process(delta):
+	acc.x = 0
+
+	# default animation is idle
+	var new_anim = "idle"
+
+	##
+	# Animations control
+	##
+	on_floor = is_on_floor()
+	is_jumping = not is_on_floor()
+	is_falling = not is_on_floor()
+	is_walking = (Input.is_action_pressed(input_left) and not Input.is_action_pressed(input_right) or Input.is_action_pressed(input_right) and not Input.is_action_pressed(input_left))
+	#####
+
+	if is_on_floor():
+		coyote_timer.start()
+	if not coyote_timer.is_stopped():
+		jumps_left = max_jump_amount
+
+	if Input.is_action_pressed(input_left) and not Input.is_action_pressed(input_right):
+		acc.x = -max_acceleration
+
+		# walking
+		new_anim = "run"
+
+	if Input.is_action_pressed(input_right) and not Input.is_action_pressed(input_left):
+		acc.x = max_acceleration
+
+		# walking
+		new_anim = "run"
+
+
+
+	# Check for ground jumps when we can hold jump
+	if can_hold_jump:
+		if Input.is_action_pressed(input_jump):
+			# Dont use double jump when holding down
+			if is_on_floor():
+				jump()
+				# jumping
+				new_anim = "jumping"
+
+
+	# Check for ground jumps when we cannot hold jump
+	if not can_hold_jump:
+		if not jump_buffer_timer.is_stopped() and is_on_floor():
+			jump()
+
+			#jumping
+			new_anim = "jumping"
+
+	# Check for jumps in the air
+	if Input.is_action_just_pressed(input_jump):
+		holding_jump = true
+		jump_buffer_timer.start()
+
+		# Only jump in the air when press the button down, code above already jumps when we are grounded
+		if not is_on_floor():
+			jump()
+
+			# jumping
+			new_anim = "jumping"
+
+
+	if Input.is_action_just_released(input_jump):
+		holding_jump = false
+
+
+	var gravity = default_gravity
+
+	if vel.y > 0: # If we are falling
+		gravity *= falling_gravity_multiplier
+
+		# falling
+		new_anim = "falling"
+
+	if not holding_jump and vel.y < 0: # if we released jump and are still rising
+		if not jumps_left < max_jump_amount - 1: # Always jump to max height when we are using a double jump
+			gravity *= release_gravity_multiplier # multiply the gravity so we have a lower jump
+
+	acc.y = -gravity
+	vel.x *= 1 / (1 + (delta * friction))
+
+	vel += acc * delta
+	vel = move_and_slide(vel, Vector2.UP)
+
+
+
+func calculate_gravity(max_jump_height, jump_duration):
+	# Calculates the desired gravity by looking at our jump height and jump duration
+	# Formula is from this video https://www.youtube.com/watch?v=hG9SzQxaCm8
+	return (-2 * max_jump_height) / pow(jump_duration, 2)
+
+
+func calculate_jump_velocity(max_jump_height, jump_duration):
+	# Calculates the desired jump velocity by lookihg at our jump height and jump duration
+	return (2 * max_jump_height) / (jump_duration)
+
+
+func calculate_jump_velocity2(max_jump_height, gravity):
+	# Calculates jump velocity from jump height and gravity
+	# formula from
+	# https://sciencing.com/acceleration-velocity-distance-7779124.html#:~:text=in%20every%20step.-,Starting%20from%3A,-v%5E2%3Du
+	return sqrt(-2 * gravity * max_jump_height)
+
+
+func calculate_release_gravity_multiplier(jump_velocity, min_jump_height):
+	# Calculates the gravity when the key is released based on the minimum jump height and jump velocity
+	# Formula is from this website https://sciencing.com/acceleration-velocity-distance-7779124.html
+	var release_gravity = 0 - pow(jump_velocity, 2) / (2 * min_jump_height)
+	return release_gravity / default_gravity
+
+
+func calculate_friction(time_to_max):
+	# Formula from https://www.reddit.com/r/gamedev/comments/bdbery/comment/ekxw9g4/?utm_source=share&utm_medium=web2x&context=3
+	# this friction will hit 90% of max speed after the accel time
+	return 1 - (2.30259 / time_to_max)
+
+
+func calculate_speed(max_speed, friction):
+	# Formula from https://www.reddit.com/r/gamedev/comments/bdbery/comment/ekxw9g4/?utm_source=share&utm_medium=web2x&context=3
+	return (max_speed / friction) - max_speed
+
+
+func jump():
+	if jumps_left == max_jump_amount and coyote_timer.is_stopped():
+		# Your first jump must be used when on the ground
+		# If you fall off the ground and then jump you will be using you second jump
+		print("no")
+		jumps_left -= 1
+
+	if jumps_left > 0:
+		if jumps_left < max_jump_amount: # If we are double jumping
+			vel.y = -double_jump_velocity
+		else:
+			vel.y = -jump_velocity
+		jumps_left -= 1
+
+
+	coyote_timer.stop()
+
+
+func set_max_jump_height(value):
+	max_jump_height = value
+
+	default_gravity = calculate_gravity(max_jump_height, jump_duration)
+	jump_velocity = calculate_jump_velocity(max_jump_height, jump_duration)
+	double_jump_velocity = calculate_jump_velocity2(double_jump_height, default_gravity)
+	release_gravity_multiplier = calculate_release_gravity_multiplier(jump_velocity, min_jump_height)
+
+
+func set_jump_duration(value):
+	jump_duration = value
+
+	default_gravity = calculate_gravity(max_jump_height, jump_duration)
+	jump_velocity = calculate_jump_velocity(max_jump_height, jump_duration)
+	double_jump_velocity = calculate_jump_velocity2(double_jump_height, default_gravity)
+	release_gravity_multiplier = calculate_release_gravity_multiplier(jump_velocity, min_jump_height)
+
+
+func set_min_jump_height(value):
+	min_jump_height = value
+	release_gravity_multiplier = calculate_release_gravity_multiplier(jump_velocity, min_jump_height)
+
+
+func set_double_jump_height(value):
+	double_jump_height = value
+	double_jump_velocity = calculate_jump_velocity2(double_jump_height, default_gravity)
+
