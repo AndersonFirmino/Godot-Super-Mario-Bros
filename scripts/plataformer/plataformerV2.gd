@@ -1,6 +1,9 @@
 extends KinematicBody2D
 
 class_name PlataformerV2
+##
+# TODO: Adicionar mecanica de aceleração igual super mario bros (nes)
+##
 
 # Set these to the name of your action (in the Input Map)
 export var input_left : String = "move_left"

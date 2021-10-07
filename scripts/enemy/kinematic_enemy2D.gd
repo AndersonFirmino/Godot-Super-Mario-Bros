@@ -23,6 +23,17 @@ var on_floor = null
 enum direction {LEFT, RIGHT}
 export (direction) var current_direction
 
+export(bool) var has_facing_direction = false
+
+func _ready():
+	# TODO: Consertar a mecanica de direcao esta quebrada...
+	if current_direction == direction.LEFT:
+		$sprite.scale.x = 1
+
+	else:
+		$sprite.scale.x = -1
+
+
 func _physics_process(delta):
 	# Apply gravity
 	linear_vel += delta * GRAVITY_VEC
@@ -33,9 +44,14 @@ func _physics_process(delta):
 
 	# move de enemy
 	if current_direction == direction.LEFT:
+		if has_facing_direction:
+			$sprite.scale.x = 1
+
 		translate(Vector2(-ENEMY_SPEED_X, ENEMY_SPEED_Y))
 
 	elif current_direction == direction.RIGHT:
+		if has_facing_direction:
+			$sprite.scale.x = -1
 		translate(Vector2(ENEMY_SPEED_X, ENEMY_SPEED_Y))
 
 
