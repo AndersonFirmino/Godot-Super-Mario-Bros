@@ -124,6 +124,10 @@ scale = Vector2( 4, 4 )
 z_index = 1
 collision_layer = 0
 script = ExtResource( 1 )
+max_jump_height = 200
+jump_duration = 0.5
+falling_gravity_multiplier = 3.0
+can_hold_jump = true
 node_sprite = NodePath("sprite")
 animation_tree = NodePath("animation_tree")
 
