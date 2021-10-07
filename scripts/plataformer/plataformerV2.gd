@@ -127,6 +127,13 @@ func _physics_process(delta):
 		new_anim = "run"
 
 
+	# Change Plataformer direction
+	if Input.is_action_pressed(input_left) and not Input.is_action_pressed(input_right) and is_alive:
+		sprite.scale.x = -1
+	if Input.is_action_pressed(input_right) and not Input.is_action_pressed(input_left) and is_alive:
+		sprite.scale.x = 1
+
+
 
 	# Check for ground jumps when we can hold jump
 	if can_hold_jump:
